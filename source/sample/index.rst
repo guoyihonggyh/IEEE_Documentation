@@ -1,5 +1,5 @@
-Sample Creation
-==================
+Sample Data Creation
+========================
 
 .. toctree::
    :maxdepth: 2
