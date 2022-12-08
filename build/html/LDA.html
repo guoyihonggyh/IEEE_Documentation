@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; IEEE 0.1 documentation</title>
+  <title>Latent Dirichlet Allocation (LDA) &mdash; IEEE 0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,8 +17,10 @@
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BERT for abstract embedding" href="Bert.html" />
+    <link rel="prev" title="Sample Data Creation" href="Sample%20Creation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -35,10 +38,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Get%20started.html">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Sample%20Creation.html">Sample Data Creation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LDA.html">Latent Dirichlet Allocation (LDA)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Latent Dirichlet Allocation (LDA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lda-introduction">LDA introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Bert.html">BERT for abstract embedding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="feature_engineering.html">Feature Engineering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classification.html">Classification model</a></li>
@@ -59,8 +66,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Index</li>
+      <li class="breadcrumb-item active">Latent Dirichlet Allocation (LDA)</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/LDA.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -68,17 +76,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
-</div>
+  <section id="latent-dirichlet-allocation-lda">
+<h1>Latent Dirichlet Allocation (LDA)<a class="headerlink" href="#latent-dirichlet-allocation-lda" title="Permalink to this heading"></a></h1>
+<section id="lda-introduction">
+<h2>LDA introduction<a class="headerlink" href="#lda-introduction" title="Permalink to this heading"></a></h2>
+<p>LDA, an unsupervised learning method, is used to classify text in a document to a particular topic.
+It builds a topic per document (abstract) model and words per topic model, modeled as Dirichlet distributions.</p>
+<ol class="arabic simple">
+<li><p>Each document is modeled as a multinomial distribution of topics and each topic is modeled as a multinomial distribution of words.</p></li>
+<li><p>LDA assumes that the every chunk of text we feed into it will contain words that are somehow related. Therefore choosing the right corpus of data is crucial.</p></li>
+<li><p>It also assumes documents are produced from a mixture of topics. Those topics then generate words based on their probability distribution.</p></li>
+</ol>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading"></a></h2>
+<p>We do the LDA with sparknlp with the following steps:</p>
+<ol class="arabic simple">
+<li><p>Given all the abstracts, we pre-process the data, remove the punctuation of the data, etc.</p></li>
+<li><p>We tokenize the data and normalize it.</p></li>
+<li><p>We use TF-IDF to obtain the candidate set of words.</p></li>
+<li><p>We use sparknlp to train LDA model with 6, 10, 20, 50 clusters respectively.</p></li>
+<li><p>Store the topic distribution result.</p></li>
+</ol>
+<p>The example code:</p>
+</section>
+</section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Sample%20Creation.html" class="btn btn-neutral float-left" title="Sample Data Creation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bert.html" class="btn btn-neutral float-right" title="BERT for abstract embedding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
