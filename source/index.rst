@@ -12,9 +12,15 @@ Welcome! Click “Get Started” to start
    :maxdepth: 2
 
 
-   start1/index
+   Get started
 
-   sample/index
+   Sample Creation
+
+   LDA
+   Bert
+   feature_engineering
+   classification
+   Evaluation
 
 
 

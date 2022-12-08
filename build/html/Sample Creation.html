@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Here is for Sample Creation &mdash; IEEE 0.1 documentation</title>
+  <title>Sample Data Creation &mdash; IEEE 0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,7 +18,9 @@
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Latent Dirichlet Allocation (LDA)" href="LDA.html" />
+    <link rel="prev" title="Get Started" href="Get%20started.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -36,9 +38,24 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="start1/index.html">Get Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sample/index.html">Sample Data Creation</a></li>
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Get%20started.html">Get Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sample Data Creation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-description">Data Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Sample data creation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#level-0-1-sample-method-s1">Level 0&amp;1 sample method (s1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#level-2-sample-method-s2">Level 2 sample method (s2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#another-level-2-sample-method-s3">Another level 2 sample method (s3)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#result">Result</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LDA.html">Latent Dirichlet Allocation (LDA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bert.html">BERT for abstract embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feature_engineering.html">Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classification.html">Classification model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Evaluation.html">Evaluation</a></li>
 </ul>
 
         </div>
@@ -55,7 +72,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Here is for Sample Creation</li>
+      <li class="breadcrumb-item active">Sample Data Creation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Sample Creation.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -65,14 +82,154 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="here-is-for-sample-creation">
-<h1>Here is for Sample Creation<a class="headerlink" href="#here-is-for-sample-creation" title="Permalink to this heading"></a></h1>
+  <section id="sample-data-creation">
+<h1>Sample Data Creation<a class="headerlink" href="#sample-data-creation" title="Permalink to this heading"></a></h1>
+<section id="data-description">
+<h2>Data Description<a class="headerlink" href="#data-description" title="Permalink to this heading"></a></h2>
+<p>IEEE Xplore is one of the most popular digital libraries provided by the Institute of Electrical and Electronics Engineers （IEEE）. It hosts more than 5.8M+ publications for engineering, computing, and technology information around the globe.</p>
+<p>However, the high volume and speed of influx of the scholarly publications requires a more “intelligent” library system that can automatically comprehend and identify topics from the publications, which lays a foundation for facilitating efficient searches on library.</p>
+<p>The data contains 714971 field of study(FOS) and is devided into 6 level, where as the level rise up, the field of study would be more specific. Since the size of the raw data are significantly large, it is not possible for one to train or test on the raw data. Then we need to sample the data from the database.</p>
+<p>In practical, we would like to sample data level 0&amp;1 and level 2.</p>
+</section>
+<section id="id1">
+<h2>Sample data creation<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<p>Mainly, there are four steps to create sample data:</p>
+<blockquote>
+<div><p>Extract FOS and corresponding papers with constraint on level, score in database.</p>
+<p>Load sample data from database; Convert invert indexed abstract into in-reading order abstract.</p>
+<blockquote>
+<div><p>Originally, the inv_abstract was a dictionary whose keys are words and values are the index of the words. Then we put the key and value pairs into a tuple and sort by the index, which would make the words listed in the right sequence. In the end, we could convert the words tuple to a string, which is exactly the abstract we want. Meanwhile, we also remove the stop words in abstract as well.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverted_to_text_og</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+    <span class="n">dictionary</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">dictionary</span><span class="p">)</span>
+    <span class="n">tuples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">[</span><span class="s1">&#39;InvertedIndex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+            <span class="n">tuples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="n">abstact_tuples</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tuples</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">abstract</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">abstact_tuples</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">abstract</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Remove non-English abstracts using spaCy.</p>
+<blockquote>
+<div><p>“We can add code here if we want.”</p>
+</div></blockquote>
+<p>Conduct stratified train validation split w.r.t FOS.</p>
+</div></blockquote>
+<section id="level-0-1-sample-method-s1">
+<h3>Level 0&amp;1 sample method (s1)<a class="headerlink" href="#level-0-1-sample-method-s1" title="Permalink to this heading"></a></h3>
+<p>In level 0&amp;1, there are in total 310 unique FOS. And we sample 10 papers for each FOS, which would give us 3100 papers in total.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">table</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">sample_paper_level_01</span> <span class="k">as</span>
+<span class="n">select</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">fieldofstudyid</span><span class="p">,</span> <span class="n">p3</span><span class="o">.</span><span class="n">indexedabstract</span>
+<span class="kn">from</span> <span class="p">(</span>
+    <span class="n">select</span> <span class="n">p</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span><span class="p">,</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span> <span class="n">order</span> <span class="n">by</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span> <span class="n">desc</span><span class="p">)</span> <span class="k">as</span> <span class="n">row_num</span>
+    <span class="kn">from</span> <span class="nn">paperfieldsofstudy</span> <span class="n">p</span>
+    <span class="n">left</span> <span class="n">join</span> <span class="n">paperabstractsinvertedindex</span> <span class="n">p2</span> <span class="n">on</span> <span class="n">p2</span><span class="o">.</span><span class="n">paperid</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">paperid</span>
+    <span class="n">where</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span> <span class="ow">in</span> <span class="p">(</span><span class="n">select</span> <span class="n">f</span><span class="o">.</span><span class="n">fieldofstudyid</span> <span class="kn">from</span> <span class="nn">fieldsofstudy</span> <span class="n">f</span> <span class="n">where</span> <span class="n">f</span><span class="o">.</span><span class="n">level</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span> <span class="o">&gt;=</span> <span class="mf">0.45</span> <span class="ow">and</span> <span class="n">p2</span><span class="o">.</span><span class="n">paperid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">null</span><span class="p">)</span> <span class="n">a</span>
+<span class="n">left</span> <span class="n">join</span> <span class="n">paperabstractsinvertedindex</span> <span class="n">p3</span> <span class="n">on</span> <span class="n">p3</span><span class="o">.</span><span class="n">paperid</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span>
+<span class="n">where</span> <span class="n">a</span><span class="o">.</span><span class="n">row_num</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="level-2-sample-method-s2">
+<h3>Level 2 sample method (s2)<a class="headerlink" href="#level-2-sample-method-s2" title="Permalink to this heading"></a></h3>
+<p>The sample method is the same with level 0&amp;1. In level 2, there are 25472 unique FOS. And simially, we sample 10 papers for each FOS, which would return 254720 papers.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">table</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">sample_paper_level_2</span> <span class="k">as</span>
+<span class="n">select</span> <span class="n">b</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">indexedabstract</span>
+<span class="n">from</span><span class="p">(</span>
+    <span class="n">select</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">indexedabstract</span><span class="p">,</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span> <span class="n">order</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">score</span> <span class="n">desc</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">)</span> <span class="k">as</span> <span class="n">row_num</span>
+    <span class="kn">from</span> <span class="p">(</span>
+        <span class="n">select</span> <span class="n">p</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span>
+        <span class="kn">from</span> <span class="nn">paperfieldsofstudy</span> <span class="n">p</span>
+        <span class="n">inner</span> <span class="n">join</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">papercountperfos_l2_v2</span> <span class="n">pl</span> <span class="n">on</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span>
+        <span class="n">where</span> <span class="n">pl</span><span class="o">.</span><span class="n">paper_cnt</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.6</span> <span class="p">)</span> <span class="k">as</span> <span class="n">a</span>
+    <span class="n">inner</span> <span class="n">join</span> <span class="n">paperabstractsinvertedindex</span> <span class="n">p2</span> <span class="n">on</span> <span class="n">p2</span><span class="o">.</span><span class="n">paperid</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">b</span>
+<span class="n">where</span> <span class="n">b</span><span class="o">.</span><span class="n">row_num</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span>
+
+
+<span class="n">create</span> <span class="n">table</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">sample_paper_level_2_more</span> <span class="k">as</span>
+<span class="n">select</span> <span class="n">b</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">indexedabstract</span>
+<span class="n">from</span><span class="p">(</span>
+    <span class="n">select</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">indexedabstract</span><span class="p">,</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span> <span class="n">order</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">score</span> <span class="n">desc</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">)</span> <span class="k">as</span> <span class="n">row_num</span>
+    <span class="kn">from</span> <span class="p">(</span>
+        <span class="n">select</span> <span class="n">p</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span>
+        <span class="kn">from</span> <span class="nn">paperfieldsofstudy</span> <span class="n">p</span>
+        <span class="n">inner</span> <span class="n">join</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">papercountperfos_l2_v2</span> <span class="n">pl</span> <span class="n">on</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span>
+        <span class="n">where</span> <span class="n">pl</span><span class="o">.</span><span class="n">paper_cnt</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.6</span> <span class="p">)</span> <span class="k">as</span> <span class="n">a</span>
+    <span class="n">inner</span> <span class="n">join</span> <span class="n">paperabstractsinvertedindex</span> <span class="n">p2</span> <span class="n">on</span> <span class="n">p2</span><span class="o">.</span><span class="n">paperid</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">b</span>
+<span class="n">where</span> <span class="n">b</span><span class="o">.</span><span class="n">row_num</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">row_num</span> <span class="o">&lt;=</span> <span class="mi">25</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="another-level-2-sample-method-s3">
+<h3>Another level 2 sample method (s3)<a class="headerlink" href="#another-level-2-sample-method-s3" title="Permalink to this heading"></a></h3>
+<p>According to the previous method, the sample data size of level 2 is still very large, which would slow down the training time and the result is not good as well.</p>
+<p>Hence we choose the FOS which corresponding to more than 500 papers with score &gt;0.6. It will return 4998 FOS and we pick 20 papers for each FOS.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">table</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">sample_paper_level_2_500</span> <span class="k">as</span>
+<span class="n">select</span> <span class="n">b</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">indexedabstract</span>
+<span class="n">from</span><span class="p">(</span>
+    <span class="n">select</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">indexedabstract</span><span class="p">,</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="n">partition</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">fos</span> <span class="n">order</span> <span class="n">by</span> <span class="n">a</span><span class="o">.</span><span class="n">score</span> <span class="n">desc</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span><span class="p">)</span> <span class="k">as</span> <span class="n">row_num</span>
+    <span class="kn">from</span> <span class="p">(</span>
+        <span class="n">select</span> <span class="n">p</span><span class="o">.</span><span class="n">paperid</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span>
+        <span class="kn">from</span> <span class="nn">paperfieldsofstudy</span> <span class="n">p</span>
+        <span class="n">inner</span> <span class="n">join</span> <span class="n">fos_modeling</span><span class="o">.</span><span class="n">papercountperfos_l2_v2</span> <span class="n">pl</span> <span class="n">on</span> <span class="n">pl</span><span class="o">.</span><span class="n">fos</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">fieldofstudyid</span>
+        <span class="n">where</span> <span class="n">pl</span><span class="o">.</span><span class="n">paper_cnt</span> <span class="o">&gt;=</span> <span class="mi">500</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mf">0.6</span> <span class="p">)</span> <span class="k">as</span> <span class="n">a</span>
+    <span class="n">inner</span> <span class="n">join</span> <span class="n">paperabstractsinvertedindex</span> <span class="n">p2</span> <span class="n">on</span> <span class="n">p2</span><span class="o">.</span><span class="n">paperid</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">paperid</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">b</span>
+<span class="n">where</span> <span class="n">b</span><span class="o">.</span><span class="n">row_num</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="result">
+<h2>Result<a class="headerlink" href="#result" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Sample data description</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 14%" />
+<col style="width: 31%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>File Name</p></th>
+<th class="head"><p>FOS level</p></th>
+<th class="head"><p>Number of FOS Classes</p></th>
+<th class="head"><p>Train/Validation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sample_creation_s1</p></td>
+<td><p>level 0&amp;1</p></td>
+<td><p>310</p></td>
+<td><p>8:2</p></td>
+</tr>
+<tr class="row-odd"><td><p>sample_creation_s2</p></td>
+<td><p>level 2</p></td>
+<td><p>25472</p></td>
+<td><p>7:3</p></td>
+</tr>
+<tr class="row-even"><td><p>sample_creation_s3</p></td>
+<td><p>level 2</p></td>
+<td><p>4988</p></td>
+<td><p>7:3</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Get%20started.html" class="btn btn-neutral float-left" title="Get Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LDA.html" class="btn btn-neutral float-right" title="Latent Dirichlet Allocation (LDA)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
