@@ -1,4 +1,4 @@
-Topic modeling with LDA-Bert
+Topic Modeling with LDA-BERT
 ====================================================
 
 
