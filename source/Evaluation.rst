@@ -46,13 +46,27 @@ The calculation is as followed:
 where where :math:`I` is an indicator function,
 :math:`predicted_i` is the predicted field of study of abstract i and :math:`S_i` is all the field of study of abstract.
 
-.. code:: bash
+    ::
 
         >> predicted_label = [[1],[3]]
         >> true_label = [[0,3,4],[0,1,2,3,4]]
         >> accuracy_0 = 0
         >> accuracy_1 = 1
         >> average_accuracy = (0 + 1)/2 = 0.5
+
+    ::
+
+        def Average_acc(pred, true):
+            accuracy = []
+            true_labels = true.groupby("paperid")["label"].apply(list).to_dict()
+            pred_labels = dict(zip(pred.paperid, pred.prediction))
+            for key, val in true_labels.items():
+                pred = pred_labels[key]
+                accuracy.append(pred in val)
+            return np.mean(accuracy)
+
+         avg_acc = Average_acc(pred = predictions_valid_label_df, true = true_valid_label_df)
+         print("Average accuracy:", avg_acc)
 
 Average Accuracy
 ------------------------------
@@ -69,19 +83,6 @@ we calculate how many predicted label are in the set of true label.
         >> accuracy_1 = 4/5
         >> average_accuracy = (1/3 + 4/5)/2 = 0.5
 
-    ::
-
-        def Average_acc(pred, true):
-            accuracy = []
-            true_labels = true.groupby("paperid")["label"].apply(list).to_dict()
-            pred_labels = dict(zip(pred.paperid, pred.prediction))
-            for key, val in true_labels.items():
-                pred = pred_labels[key]
-                accuracy.append(pred in val)
-            return np.mean(accuracy)
-
-         avg_acc = Average_acc(pred = predictions_valid_label_df, true = true_valid_label_df)
-         print("Average accuracy:", avg_acc)
 
 
 
