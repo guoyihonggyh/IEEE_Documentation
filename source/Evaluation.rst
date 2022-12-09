@@ -8,7 +8,7 @@ Accuracy
 For each abstract in test set, we assign a single label based on our classification model.
 And if that assigned label equals to the true label in the test set, we count one. The calculation is as followed:
 
-:math:`Accuracy = \frac{\sum_i I(predicted_i = truth_i)}{number of all paper}`,
+:math:`Accuracy = \frac{\sum_i I(predicted_i = truth_i)}{number \ of \ all \ paper}`,
 
 where :math:`I` is an indicator function,
 :math:`predicted_i` is the predicted field of study of abstract i and :math:`truth_i` is the true field of study of abstract i
@@ -41,7 +41,7 @@ So the accuracy above might miss some field of study. We propose a metric called
 in the test set, we still assign one label based on the classification. If the the assigned label in the set of true label, we count one.
 The calculation is as followed:
 
-:math:`Adjusted Accuracy = \frac{\sum_i I(if predicted_i \in S_i)}{number of all paper}`,
+:math:`Adjusted \ Accuracy = \frac{\sum_i I(predicted_i \in S_i)}{number \ of \ all \ paper}`,
 
 where where :math:`I` is an indicator function,
 :math:`predicted_i` is the predicted field of study of abstract i and :math:`S_i` is all the field of study of abstract.
@@ -74,6 +74,12 @@ Average Accuracy
 Sometimes it is not appropriate to predict only one label, so e also propose a multi-label prediction and evaluate it with average accuracy.
 For each abstract, we assign top :math:`k` labels to it based on our classification probability where :math:`k \leq 5`. Then for each paper,
 we calculate how many predicted label are in the set of true label.
+
+:math:`Accuracy_i = \frac{\sum_t I(prediction^t_i \in S_i}{number \ of \ all \ prediction}`
+
+:math:`Average \ Accuracy = \frac{Accuracy_i}{number \ of \ all \ paper}`
+
+where :math:`Accuracy_i` is the accuracy of abstract i, :math:`prediction^k_i` is the :math:`t^{th}` prediction.
 
     ::
 
