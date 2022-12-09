@@ -16,17 +16,11 @@ where :math:`v^i` is the final feature representation of an abstract :math:`i`, 
 topic distribution vector and :math:`v^{USE}_i` is the embedding from USE. The example code is shown below:
 
 
+     ::
 
-.. code-block:: python
-     :linenos:
-
-
-
-
-
-With this feature, we can train
-a classification model to tag paper.
-
+          assembler = VectorAssembler().setInputCols(['bert', "lda"]).setOutputCol('features')
+          train_df = assembler.transform(trans_train)
+          valid_df = assembler.transform(trans_valid)
 
 
 

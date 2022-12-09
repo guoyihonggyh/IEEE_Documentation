@@ -25,6 +25,8 @@ Installation
 
     pip3 install -r setup.txt
 
+.. 5. Get access to Amazon Web Services (AWS), after connecting to EC2, we can store data at S3 and process data at Redshift.
+
 Pipline Creation
 ------------------
 

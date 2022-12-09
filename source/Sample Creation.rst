@@ -8,7 +8,7 @@ IEEE Xplore is one of the most popular digital libraries provided by the Institu
 
 However, the high volume and speed of influx of the scholarly publications requires a more "intelligent" library system that can automatically comprehend and identify topics from the publications, which lays a foundation for facilitating efficient searches on library.
 
-The data contains 714971 field of study(FOS) and is devided into 6 level, where as the level rise up, the field of study would be more specific. Since the size of the raw data are significantly large, it is not possible for one to train or test on the raw data. Then we need to sample the data from the database.
+The data contains 714,971 field of study(FOS) and is devided into 6 level, where as the level rise up, the field of study would be more specific. Since the size of the raw data are significantly large, it is not possible for one to train or test on the raw data. Then we need to sample the data from the database.
 
 In practical, we would like to sample data level 0&1 and level 2.
 
@@ -64,7 +64,7 @@ In level 0&1, there are in total 310 unique FOS. And we sample 10 papers for eac
 Level 2 sample method (s2)
 ++++++++++++++++++++++++++++++++++
 
-The sample method is the same with level 0&1. In level 2, there are 25472 unique FOS. And simially, we sample 10 papers for each FOS, which would return 254720 papers.
+The sample method is the same with level 0&1. In level 2, there are 25,472 unique FOS. And simially, we sample 10 papers for each FOS, which would return 254,720 papers.
 
 ::
 
@@ -98,9 +98,9 @@ The sample method is the same with level 0&1. In level 2, there are 25472 unique
 Another level 2 sample method (s3)
 ++++++++++++++++++++++++++++++++++
 
-According to the previous method, the sample data size of level 2 is still very large, which would slow down the training time and the result is not good as well.
+According to the previous method, the sample data size of level 2 is still very large, which would slow down the training time and the result is not good as well. Due to the result of predictive accuracy for the training set, we think the model does not train sufficient on the training set. 
 
-Hence we choose the FOS which corresponding to more than 500 papers with score >0.6. It will return 4998 FOS and we pick 20 papers for each FOS.
+Hence we choose the FOS which corresponding to more than 500 papers with score >0.6. It will return 4,998 FOS and we pick 20 papers for each FOS.
 
 ::
 

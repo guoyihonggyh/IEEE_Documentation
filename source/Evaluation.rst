@@ -14,14 +14,25 @@ where :math:`I` is an indicator function,
 :math:`predicted_i` is the predicted field of study of abstract i and :math:`truth_i` is the true field of study of abstract i
 shown in the test set.
 
-
-.. code:: bash
+    ::
 
         >> predicted_label = [[1],[3]]
         >> true_label = [[0],[1]]
         >> accuracy_0 = 0
         >> accuracy_1 = 0
         >> average_accuracy = (0 + 0)/2 = 0
+
+Example code of accuracy calculation.
+    ::
+
+        predictions_train = lrModel.transform(train_df)
+        predictions_valid = lrModel.transform(valid_df)
+
+        train_acc = evaluator.evaluate(predictions_train)
+        valid_acc = evaluator.evaluate(predictions_valid)
+        print("Train acc:", train_acc)
+        print("Valid acc:", valid_acc)
+
 
 Adjusted Accuracy
 ------------------------------
@@ -50,7 +61,7 @@ Sometimes it is not appropriate to predict only one label, so e also propose a m
 For each abstract, we assign top :math:`k` labels to it based on our classification probability where :math:`k \leq 5`. Then for each paper,
 we calculate how many predicted label are in the set of true label.
 
-.. code:: bash
+    ::
 
         >> predicted_label = [[0,1,2],[0,1,2,3,4]]
         >> true_label = [[0,3,4],[0,1,2,3,4]]
@@ -58,15 +69,19 @@ we calculate how many predicted label are in the set of true label.
         >> accuracy_1 = 4/5
         >> average_accuracy = (1/3 + 4/5)/2 = 0.5
 
+    ::
 
+        def Average_acc(pred, true):
+            accuracy = []
+            true_labels = true.groupby("paperid")["label"].apply(list).to_dict()
+            pred_labels = dict(zip(pred.paperid, pred.prediction))
+            for key, val in true_labels.items():
+                pred = pred_labels[key]
+                accuracy.append(pred in val)
+            return np.mean(accuracy)
 
-The example code:
-
-
-
-
-
-
+         avg_acc = Average_acc(pred = predictions_valid_label_df, true = true_valid_label_df)
+         print("Average accuracy:", avg_acc)
 
 
 
