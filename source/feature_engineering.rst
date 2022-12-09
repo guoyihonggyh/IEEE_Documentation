@@ -5,7 +5,7 @@ Method
 -------
 To make the feature more representative, we combine the output of LDA and
 BERT output to obtain a new feature. We concatenate the vector of LDA and
-the embedding of Universal sentence encoder (USE). Specifically, for LDA with $$k$$ topic, we have a
+the embedding of Universal sentence encoder (USE). Specifically, for LDA with :math:`k` topic, we have a
 k dimension topic distribution for each abstract. For USE, we have a 512 dimension sentence embedding.
 And we concatenate this two part of vector, represented as follows:
 
