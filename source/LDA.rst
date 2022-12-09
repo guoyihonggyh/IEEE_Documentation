@@ -21,58 +21,58 @@ We do the LDA with sparknlp with the following steps:
 #. Store the topic distribution result.
 
 Load the dataset and convert it to spark dataframe
-        ::
+    ::
 
-            # Read in data
-            data_path = "~/IEEE-JHU/00_data/02_sample_level_2/sample_l2_v2_73.csv"
-            data = pd.read_csv(data_path)
-            train = data[data.train_valid == 0]
-            valid = data[data.train_valid == 1]
-            train_df = spark.createDataFrame(train[["fos", "paperid", "abstract"]]).toDF("fos", "paperid", "abstract")
-            valid_df = spark.createDataFrame(valid[["fos", "paperid", "abstract"]]).toDF("fos", "paperid", "abstract")
+        # Read in data
+        data_path = "~/IEEE-JHU/00_data/02_sample_level_2/sample_l2_v2_73.csv"
+        data = pd.read_csv(data_path)
+        train = data[data.train_valid == 0]
+        valid = data[data.train_valid == 1]
+        train_df = spark.createDataFrame(train[["fos", "paperid", "abstract"]]).toDF("fos", "paperid", "abstract")
+        valid_df = spark.createDataFrame(valid[["fos", "paperid", "abstract"]]).toDF("fos", "paperid", "abstract")
 
 Tokenize the sentence, normalize it, remove the stop words, build a pipeline and fit transform
-        ::
+    ::
 
-            # clean input
-            document_assembler = DocumentAssembler() \
-                .setInputCol("abstract") \
-                .setOutputCol("document") \
-                .setCleanupMode("shrink")
-            # Split sentence to tokens(array)
-            tokenizer = Tokenizer() \
-              .setInputCols(["document"]) \
-              .setOutputCol("token")
-            # clean unwanted characters and garbage
-            normalizer = Normalizer() \
-                .setInputCols(["token"]) \
-                .setOutputCol("normalized")
-            # remove stopwords
-            stopwords_cleaner = StopWordsCleaner()\
-                  .setInputCols("normalized")\
-                  .setOutputCol("cleanTokens")\
-                  .setCaseSensitive(False)
-            # stem the words to bring them to the root form.
-            stemmer = Stemmer() \
-                .setInputCols(["cleanTokens"]) \
-                .setOutputCol("stem")
-            # Finisher is the most important annotator. Spark NLP adds its own structure when we convert each row in the dataframe to document. Finisher helps us to bring back the expected structure viz. array of tokens.
-            finisher = Finisher() \
-                .setInputCols(["stem"]) \
-                .setOutputCols(["tokens"]) \
-                .setOutputAsArray(True) \
-                .setCleanAnnotations(True)
-            # We build a ml pipeline so that each phase can be executed in sequence. This pipeline can also be used to test the model.
-            nlp_pipeline = Pipeline(
-                stages=[document_assembler,
-                        tokenizer,
-                        normalizer,
-                        stopwords_cleaner,
-                        stemmer,
-                        finisher])
-            nlp_model = nlp_pipeline.fit(train_df)
-            train_df = nlp_model.transform(train_df)
-            valid_df = nlp_model.transform(valid_df)
+        # clean input
+        document_assembler = DocumentAssembler() \
+            .setInputCol("abstract") \
+            .setOutputCol("document") \
+            .setCleanupMode("shrink")
+        # Split sentence to tokens(array)
+        tokenizer = Tokenizer() \
+          .setInputCols(["document"]) \
+          .setOutputCol("token")
+        # clean unwanted characters and garbage
+        normalizer = Normalizer() \
+            .setInputCols(["token"]) \
+            .setOutputCol("normalized")
+        # remove stopwords
+        stopwords_cleaner = StopWordsCleaner()\
+              .setInputCols("normalized")\
+              .setOutputCol("cleanTokens")\
+              .setCaseSensitive(False)
+        # stem the words to bring them to the root form.
+        stemmer = Stemmer() \
+            .setInputCols(["cleanTokens"]) \
+            .setOutputCol("stem")
+        # Finisher is the most important annotator. Spark NLP adds its own structure when we convert each row in the dataframe to document. Finisher helps us to bring back the expected structure viz. array of tokens.
+        finisher = Finisher() \
+            .setInputCols(["stem"]) \
+            .setOutputCols(["tokens"]) \
+            .setOutputAsArray(True) \
+            .setCleanAnnotations(True)
+        # We build a ml pipeline so that each phase can be executed in sequence. This pipeline can also be used to test the model.
+        nlp_pipeline = Pipeline(
+            stages=[document_assembler,
+                    tokenizer,
+                    normalizer,
+                    stopwords_cleaner,
+                    stemmer,
+                    finisher])
+        nlp_model = nlp_pipeline.fit(train_df)
+        train_df = nlp_model.transform(train_df)
+        valid_df = nlp_model.transform(valid_df)
 
 IDF
     ::

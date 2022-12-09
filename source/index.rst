@@ -5,8 +5,6 @@
 
 Topic modeling with LDA-Bert
 ====================================================
-Welcome! Click "Get Started" to start
-
 
 
 Welcome! Click “Get Started” to start
@@ -24,10 +22,3 @@ Welcome! Click “Get Started” to start
 
 
 
-genindex
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

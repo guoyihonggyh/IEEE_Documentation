@@ -10,7 +10,21 @@ However, the high volume and speed of influx of the scholarly publications requi
 
 The data contains 714,971 field of study(FOS) and is devided into 6 level, where as the level rise up, the field of study would be more specific. Since the size of the raw data are significantly large, it is not possible for one to train or test on the raw data. Then we need to sample the data from the database.
 
-In practical, we would like to sample data level 0&1 and level 2.
+.. table:: Unique all field of study In IEEE Raw data 
+
+    ==================     ======================    
+    FOS level              Number of FOS Classes      
+    ==================     ======================     
+    level 0                      19      
+    level 1                      292
+    level 2                      137,415
+    level 3                      330,275
+    level 4                      134,843
+    level 5                      112,127
+    ==================     ======================
+According to the distribution of unique field of study and the hierarchy relation of levels, level 0 to level 5 is a progressive relationship, the lower the level, the broader the concept of field of study, the higher the level, the more specific the field of study.
+
+Thus, we select our sample data from level 0 to level 2.
 
 Sample data creation
 -------------------------------
@@ -37,8 +51,6 @@ Mainly, there are four steps to create sample data:
                 return abstract
 
     Remove non-English abstracts using spaCy.
-
-        "We can add code here if we want."
 
     Conduct stratified train validation split w.r.t FOS.
 
