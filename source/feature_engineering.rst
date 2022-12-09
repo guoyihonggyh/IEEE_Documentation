@@ -20,11 +20,6 @@ topic distribution vector and :math:`v^{USE}_i` is the embedding from USE. The e
 .. code-block:: python
      :linenos:
 
-     def some_function():
-         interesting = False
-         print 'This line is highlighted.'
-         print 'This one is not...'
-         print '...but this one is.'
 
 
 
